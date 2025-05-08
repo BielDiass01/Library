@@ -3,5 +3,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('myapp.urls')),  # Inclui as rotas definidas no app `myapp`
+    path('login/', include('django.contrib.auth.urls')),  # Inclui login/logout padrão
+    path('', include('myapp.urls')),  # Rotas da aplicação principal
 ]
