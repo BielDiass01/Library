@@ -1,0 +1,15 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Cadastro de Empréstimo{% endblock %}
+
+{% block content %}
+<h2>Cadastro de Empréstimo</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar</button>
+</form>
+
+<a href="{% url 'listar_emprestimos' %}">Voltar</a>
+{% endblock %}
