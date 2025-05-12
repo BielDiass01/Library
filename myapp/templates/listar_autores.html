@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Autores Cadastrados</h1>
+    <a href="{% url 'cadastrar_autor' %}" class="btn btn-primary">Cadastrar Novo Autor</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <form method="get" class="d-flex">
+            <input type="text" name="q" class="form-control me-2" placeholder="Buscar por nome ou nacionalidade..." value="{{ query }}">
+            <button type="submit" class="btn btn-outline-primary">Buscar</button>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Nacionalidade</th>
+                        <th>Data de Nascimento</th>
+                        <th>Livros</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for autor in autores %}
+                    <tr>
+                        <td><a href="{% url 'visualizar_autor' autor.id %}">{{ autor.nome }}</a></td>
+                        <td>{{ autor.nacionalidade }}</td>
+                        <td>{{ autor.data_nascimento|date:"d/m/Y" }}</td>
+                        <td>{{ autor.livros.count }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'editar_autor' autor.id %}" class="btn btn-sm btn-outline-primary">Editar</a>
+                                <a href="{% url 'excluir_autor' autor.id %}" class="btn btn-sm btn-outline-danger">Excluir</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Nenhum autor cadastrado.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

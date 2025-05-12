@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Cadastrar Novo Autor</h1>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="{{ form.nome.id_for_label }}" class="form-label">Nome</label>
+                {{ form.nome }}
+                {% if form.nome.errors %}
+                <div class="text-danger">{{ form.nome.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.nacionalidade.id_for_label }}" class="form-label">Nacionalidade</label>
+                {{ form.nacionalidade }}
+                {% if form.nacionalidade.errors %}
+                <div class="text-danger">{{ form.nacionalidade.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.data_nascimento.id_for_label }}" class="form-label">Data de Nascimento</label>
+                {{ form.data_nascimento }}
+                {% if form.data_nascimento.errors %}
+                <div class="text-danger">{{ form.data_nascimento.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.biografia.id_for_label }}" class="form-label">Biografia</label>
+                {{ form.biografia }}
+                {% if form.biografia.errors %}
+                <div class="text-danger">{{ form.biografia.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <a href="{% url 'listar_autores' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Excluir Autor</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Tem certeza que deseja excluir o autor "{{ autor.nome }}"?</h5>
+        
+        {% if autor.livros.exists %}
+        <div class="alert alert-warning mt-3">
+            <strong>Atenção!</strong> Este autor possui {{ autor.livros.count }} livro(s) associado(s). 
+            Excluir este autor também removerá a associação com estes livros.
+        </div>
+        {% endif %}
+        
+        <div class="mt-4">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+                <a href="{% url 'visualizar_autor' autor.id %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
