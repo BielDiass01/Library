@@ -1,0 +1,11 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<h1>Bem-vindo ao Sistema de Biblioteca</h1>
+<div class="row mt-4">
+    <div class="col-md-3">
+        <a href="{% url 'listar_livros' %}" class="btn btn-primary btn-lg">Ver Livros</a>
+    </div>
+    <!-- Outros cards/links -->
+</div>
+{% endblock %}

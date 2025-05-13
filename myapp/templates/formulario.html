@@ -1,0 +1,12 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}{% if form.instance.pk %}Editar Livro{% else %}Cadastrar Livro{% endif %}{% endblock %}
+
+{% block content %}
+<h2>{% if form.instance.pk %}Editar Livro{% else %}Novo Livro{% endif %}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>
+{% endblock %}

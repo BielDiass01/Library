@@ -1,0 +1,17 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %}Registrar Devolução{% endblock %}
+
+{% block content %}
+<h2>Registrar Devolução</h2>
+<div class="card">
+    <div class="card-body">
+        <p>Livro: {{ emprestimo.livro.titulo }}</p>
+        <p>Usuário: {{ emprestimo.usuario.username }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Confirmar Devolução</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
