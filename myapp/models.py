@@ -29,6 +29,7 @@ class Autor(models.Model):
     )
     data_cadastro = models.DateTimeField(
         auto_now_add=True,
+        editable=False,
         verbose_name="Data de cadastro"
     )
     foto = models.ImageField(
@@ -114,6 +115,7 @@ class Livro(models.Model):
     )
     data_cadastro = models.DateTimeField(
         auto_now_add=True,
+        editable=False,
         verbose_name="Data de cadastro"
     )
 
@@ -176,6 +178,7 @@ class PerfilUsuario(models.Model):
     )
     data_cadastro = models.DateTimeField(
         auto_now_add=True,
+        editable=False,
         verbose_name="Data de cadastro"
     )
     
@@ -203,6 +206,7 @@ class Emprestimo(models.Model):
         verbose_name="Data do empréstimo"
     )
     data_devolucao_prevista = models.DateTimeField(
+        default=lambda: timezone.now() + timezone.timedelta(days=15),
         verbose_name="Data prevista para devolução"
     )
     data_devolucao_efetiva = models.DateTimeField(
@@ -232,20 +236,13 @@ class Emprestimo(models.Model):
         return f"{self.livro.titulo} - {self.usuario.username} (Status: {self.get_status_display()})"
     
     def save(self, *args, **kwargs):
-        # Se for um novo empréstimo
-        if not self.pk:
-            # Define a data de devolução prevista padrão (15 dias após o empréstimo)
-            if not hasattr(self, 'data_devolucao_prevista') or not self.data_devolucao_prevista:
-                self.data_devolucao_prevista = self.data_emprestimo + timezone.timedelta(days=15)
-            
-            # Atualiza o estoque do livro
+        if not self.pk:  # Se for um novo empréstimo
             if self.livro.quantidade_disponivel > 0:
                 self.livro.quantidade_disponivel -= 1
                 self.livro.save()
             else:
                 raise ValueError("Não há exemplares disponíveis deste livro")
         
-        # Atualiza status para atrasado se passou da data
         if self.status != 'devolvido' and timezone.now() > self.data_devolucao_prevista:
             self.status = 'atrasado'
         

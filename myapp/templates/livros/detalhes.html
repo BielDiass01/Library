@@ -1,0 +1,52 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3>{{ livro.titulo }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>ISBN:</strong> {{ livro.isbn|default:"Não informado" }}</p>
+                    <p><strong>Editora:</strong> {{ livro.editora|default:"Não informada" }}</p>
+                    <p><strong>Ano de Publicação:</strong> {{ livro.ano_publicacao|default:"Não informado" }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Gênero:</strong> {{ livro.genero|default:"Não informado" }}</p>
+                    <p><strong>Páginas:</strong> {{ livro.paginas|default:"Não informado" }}</p>
+                    <p><strong>Disponibilidade:</strong>
+                        <span class="badge bg-{% if livro.quantidade_disponivel > 0 %}success{% else %}danger{% endif %}">
+                            {{ livro.quantidade_disponivel }} unidade{{ livro.quantidade_disponivel|pluralize:"s" }} disponível{{ livro.quantidade_disponivel|pluralize:"es" }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h4>Autores</h4>
+                <ul>
+                    {% for autor in livro.autores.all %}
+                    <li>{{ autor.nome }}</li>
+                    {% empty %}
+                    <li>Nenhum autor associado</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if livro.sinopse %}
+            <div class="mt-4">
+                <h4>Sinopse</h4>
+                <p>{{ livro.sinopse }}</p>
+            </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'editar_livro' livro.pk %}" class="btn btn-warning">Editar</a>
+                <a href="{% url 'listar_livros' %}" class="btn btn-secondary">Voltar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

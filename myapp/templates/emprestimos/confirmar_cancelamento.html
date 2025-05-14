@@ -1,0 +1,30 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card border-danger">
+        <div class="card-header bg-danger text-white">
+            <h3>Confirmar Cancelamento</h3>
+        </div>
+        <div class="card-body">
+            <p>Tem certeza que deseja cancelar este empréstimo?</p>
+            
+            <div class="alert alert-warning">
+                <h5>{{ emprestimo.livro.titulo }}</h5>
+                <p>Usuário: <strong>{{ emprestimo.usuario.username }}</strong></p>
+                <p>Status atual: 
+                    <span class="badge bg-{% if emprestimo.status == 'devolvido' %}success{% elif emprestimo.status == 'atrasado' %}danger{% else %}warning{% endif %}">
+                        {{ emprestimo.get_status_display }}
+                    </span>
+                </p>
+            </div>
+
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Confirmar Cancelamento</button>
+                <a href="{% url 'visualizar_emprestimo' emprestimo.pk %}" class="btn btn-secondary">Voltar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

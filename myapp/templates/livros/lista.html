@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Livros | Biblioteca{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Catálogo de Livros</h2>
+
+<div class="d-flex justify-content-between mb-4">
+    <a href="{% url 'cadastrar_livro' %}" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Adicionar Livro
+    </a>
+    <form method="get" class="d-flex">
+        <input type="text" name="q" class="form-control me-2" placeholder="Buscar livros...">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for livro in livros %}
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ livro.titulo }}</h5>
+                <p class="card-text">
+                    <small class="text-muted">
+                        {% for autor in livro.autores.all %}
+                        {{ autor.nome }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </small>
+                </p>
+                <p class="card-text">{{ livro.sinopse|truncatechars:100 }}</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'visualizar_livro' livro.pk %}" class="btn btn-sm btn-info">Detalhes</a>
+                <a href="{% url 'editar_livro' livro.pk %}" class="btn btn-sm btn-warning">Editar</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">Nenhum livro encontrado</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

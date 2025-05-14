@@ -1,0 +1,35 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>{{ usuario.usuario.username }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nome:</strong> {{ usuario.usuario.first_name }} {{ usuario.usuario.last_name }}</p>
+                    <p><strong>Email:</strong> {{ usuario.usuario.email }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Telefone:</strong> {{ usuario.telefone|default:"Não informado" }}</p>
+                    <p><strong>Data de Cadastro:</strong> {{ usuario.usuario.date_joined|date:"d/m/Y H:i" }}</p>
+                </div>
+            </div>
+
+            {% if usuario.endereco %}
+            <div class="mt-4">
+                <h4>Endereço</h4>
+                <p>{{ usuario.endereco }}</p>
+            </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'editar_usuario' usuario.pk %}" class="btn btn-warning">Editar</a>
+                <a href="{% url 'listar_usuarios' %}" class="btn btn-secondary">Voltar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Editar Autor{% else %}Cadastrar Autor{% endif %}{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">{% if form.instance.pk %}Editar Autor{% else %}Novo Autor{% endif %}</h2>
+
+<form method="post" class="col-md-6">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        {{ form.nome.label_tag }}
+        {{ form.nome }}
+        {% if form.nome.errors %}
+        <div class="invalid-feedback d-block">
+            {{ form.nome.errors }}
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Repita para outros campos -->
+    
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% if form.instance.pk %}{% url 'visualizar_autor' form.instance.pk %}{% else %}{% url 'listar_autores' %}{% endif %}" 
+           class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

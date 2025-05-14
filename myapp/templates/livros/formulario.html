@@ -1,0 +1,70 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">{% if form.instance.pk %}Editar Livro{% else %}Cadastrar Livro{% endif %}</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="{{ form.titulo.id_for_label }}" class="form-label">Título*</label>
+                    {{ form.titulo }}
+                    {% if form.titulo.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.titulo.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.autores.id_for_label }}" class="form-label">Autores*</label>
+                    {{ form.autores }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.isbn.id_for_label }}" class="form-label">ISBN</label>
+                    {{ form.isbn }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="{{ form.ano_publicacao.id_for_label }}" class="form-label">Ano de Publicação</label>
+                    {{ form.ano_publicacao }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.quantidade_disponivel.id_for_label }}" class="form-label">Quantidade Disponível</label>
+                    {{ form.quantidade_disponivel }}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ form.genero.id_for_label }}" class="form-label">Gênero</label>
+                    {{ form.genero }}
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="{{ form.sinopse.id_for_label }}" class="form-label">Sinopse</label>
+            {{ form.sinopse }}
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="{% if form.instance.pk %}{% url 'visualizar_livro' form.instance.pk %}{% else %}{% url 'listar_livros' %}{% endif %}" 
+               class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    /* Estilo para o campo de múltipla seleção */
+    select[multiple] {
+        min-height: 150px;
+    }
+</style>
+{% endblock %}

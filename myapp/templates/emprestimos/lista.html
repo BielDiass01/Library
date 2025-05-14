@@ -1,0 +1,52 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Registro de Empréstimos</h2>
+    <a href="{% url 'cadastrar_emprestimo' %}" class="btn btn-success mb-3">
+        <i class="bi bi-plus-circle"></i> Novo Empréstimo
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Livro</th>
+                    <th>Usuário</th>
+                    <th>Data Empréstimo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emprestimo in emprestimos %}
+                <tr>
+                    <td>{{ emprestimo.livro.titulo }}</td>
+                    <td>{{ emprestimo.usuario.username }}</td>
+                    <td>{{ emprestimo.data_emprestimo|date:"d/m/Y" }}</td>
+                    <td>
+                        <span class="badge bg-{% if emprestimo.status == 'devolvido' %}success{% elif emprestimo.status == 'atrasado' %}danger{% else %}warning{% endif %}">
+                            {{ emprestimo.get_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'visualizar_emprestimo' emprestimo.pk %}" class="btn btn-sm btn-info">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        {% if emprestimo.status != 'devolvido' %}
+                        <a href="{% url 'registrar_devolucao' emprestimo.pk %}" class="btn btn-sm btn-success">
+                            <i class="bi bi-check-circle"></i>
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Nenhum empréstimo registrado</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

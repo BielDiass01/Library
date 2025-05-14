@@ -1,0 +1,49 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Usuários Cadastrados</h2>
+    <a href="{% url 'cadastrar_usuario' %}" class="btn btn-success mb-3">
+        <i class="bi bi-plus-circle"></i> Novo Usuário
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Username</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.usuario.username }}</td>
+                    <td>{{ usuario.usuario.first_name }} {{ usuario.usuario.last_name }}</td>
+                    <td>{{ usuario.usuario.email }}</td>
+                    <td>{{ usuario.telefone|default:"-" }}</td>
+                    <td>
+                        <a href="{% url 'visualizar_usuario' usuario.pk %}" class="btn btn-sm btn-info">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{% url 'editar_usuario' usuario.pk %}" class="btn btn-sm btn-warning">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'excluir_usuario' usuario.pk %}" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Nenhum usuário cadastrado</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
