@@ -2,12 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
+from datetime import timedelta
+
+# Função auxiliar para data de devolução prevista
+def calcular_data_devolucao():
+    return timezone.now() + timedelta(days=15)
 
 class Autor(models.Model):
     nome = models.CharField(
-        max_length=200,
-        verbose_name="Nome completo",
-        help_text="Digite o nome completo do autor"
+        max_length=100,
+        verbose_name="Nome completo"
     )
     biografia = models.TextField(
         blank=True,
@@ -27,16 +31,15 @@ class Autor(models.Model):
         default="Brasileira",
         verbose_name="Nacionalidade"
     )
-    data_cadastro = models.DateTimeField(
-        auto_now_add=True,
-        editable=False,
-        verbose_name="Data de cadastro"
-    )
     foto = models.ImageField(
         upload_to='autores/',
         null=True,
         blank=True,
         verbose_name="Foto do autor"
+    )
+    data_cadastro = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Data de cadastro"
     )
 
     def __str__(self):
@@ -115,7 +118,6 @@ class Livro(models.Model):
     )
     data_cadastro = models.DateTimeField(
         auto_now_add=True,
-        editable=False,
         verbose_name="Data de cadastro"
     )
 
@@ -178,7 +180,6 @@ class PerfilUsuario(models.Model):
     )
     data_cadastro = models.DateTimeField(
         auto_now_add=True,
-        editable=False,
         verbose_name="Data de cadastro"
     )
     
@@ -191,6 +192,13 @@ class PerfilUsuario(models.Model):
         ordering = ['usuario__username']
 
 class Emprestimo(models.Model):
+    STATUS_CHOICES = [
+        ('emprestado', 'Emprestado'),
+        ('devolvido', 'Devolvido'),
+        ('atrasado', 'Atrasado'),
+        ('renovado', 'Renovado'),
+    ]
+    
     livro = models.ForeignKey(
         Livro,
         on_delete=models.CASCADE,
@@ -206,7 +214,7 @@ class Emprestimo(models.Model):
         verbose_name="Data do empréstimo"
     )
     data_devolucao_prevista = models.DateTimeField(
-        default=lambda: timezone.now() + timezone.timedelta(days=15),
+        default=calcular_data_devolucao,
         verbose_name="Data prevista para devolução"
     )
     data_devolucao_efetiva = models.DateTimeField(
@@ -219,12 +227,6 @@ class Emprestimo(models.Model):
         null=True,
         verbose_name="Observações"
     )
-    STATUS_CHOICES = [
-        ('emprestado', 'Emprestado'),
-        ('devolvido', 'Devolvido'),
-        ('atrasado', 'Atrasado'),
-        ('renovado', 'Renovado'),
-    ]
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
